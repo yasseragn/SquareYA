@@ -92,8 +92,22 @@ document.addEventListener("DOMContentLoaded", function() {
                 cardHtml += createCard(currency, prices[currency.code] || {}, index * 0.05);
                 adCounter++;
                 if (adCounter === 4 || adCounter === 8) {
-                    cardHtml += '<div class="ads-container"><div class="ads-placeholder"><span>وحدة إعلانية مربعة</span><span class="ad-size">Medium Rectangle (300x250)</span></div></div>';
-                }
+    cardHtml += `
+        <div class="ads-container">
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6828427452502135" crossorigin="anonymous"></script>
+            <!-- Display AD Square 01 -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-6828427452502135"
+                 data-ad-slot="4369788489"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    `;
+}
             });
             cardsGrid.innerHTML = cardHtml;
 
