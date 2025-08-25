@@ -1,16 +1,14 @@
     document.addEventListener("DOMContentLoaded", function() {
-        const apiUrl = 'https://script.google.com/macros/s/AKfycbwXDMnAJxPSWg3UdyuCJaXZDHCYOkHtqvn-BOPRrdcq-no3HtzYfM-aTqfbJPPBiqE/exec?refresh=true'; // الصق رابط API الخاص بك هنا
+        const apiUrl = 'https://script.google.com/macros/s/AKfycbwXDMnAJxPSWg3UdyuCJaXZDHCYOkHtqvn-BOPRrdcq-no3HtzYfM-aTqfbJPPBiqE/exec?refresh=true'; 
         
-        // --- قسم الإعلانات ---
-        // الصق بيانات الشفرة الإعلانية الأولى هنا (بعد 4 بطاقات)
+
         const ad_client_1 = "ca-pub-6828427452502135"; 
         const ad_slot_1 = "4369788489";
 
-        // الصق بيانات الشفرة الإعلانية الثانية هنا (بعد 8 بطاقات)
+
         const ad_client_2 = "ca-pub-6828427452502135";
         const ad_slot_2 = "2199523359";
 
-        // الصق بيانات الشفرة الإعلانية الثالثة هنا (إذا أردت استخدامها)
         const ad_client_3 = "ca-pub-6828427452502135";
         const ad_slot_3 = "4606194845";
         // --------------------
@@ -131,7 +129,7 @@
                 currencies.forEach((currency, index) => {
                     cardHtml += createCard(currency, prices[currency.code] || {}, index * 0.05);
                     adCounter++;
-                    // تم تعديل المنطق هنا ليدعم 3 إعلانات
+
                     if (adCounter === 3) {
                         cardHtml += '<div class="ads-container" id="ad-container-1"></div>';
                     }
