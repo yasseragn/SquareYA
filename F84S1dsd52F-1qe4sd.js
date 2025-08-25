@@ -1,20 +1,11 @@
 document.addEventListener("DOMContentLoaded", function() {
      const apiUrl = 'https://script.google.com/macros/s/AKfycbwXDMnAJxPSWg3UdyuCJaXZDHCYOkHtqvn-BOPRrdcq-no3HtzYfM-aTqfbJPPBiqE/exec?refresh=true'; 
-        
-
-        const ad_client_1 = "ca-pub-6828427452502135"; 
-        const ad_slot_1 = "4369788489";
-
-
-        const ad_client_2 = "ca-pub-6828427452502135";
-        const ad_slot_2 = "2199523359";
-
-        const ad_client_3 = "ca-pub-6828427452502135";
-        const ad_slot_3 = "4606194845";
-        // --------------------
     
     const loader = document.getElementById('loader');
-    const cardsGrid = document.getElementById('cards-grid');
+    const cardsGrid1 = document.getElementById('cards-grid-1');
+    const cardsGrid2 = document.getElementById('cards-grid-2');
+    const cardsGrid3 = document.getElementById('cards-grid-3');
+
     let currencyRates = {};
     const currencies = [
         { code: 'eur', name: 'يورو', major: true }, { code: 'usd', name: 'دولار أمريكي', major: true },
@@ -84,32 +75,6 @@ document.addEventListener("DOMContentLoaded", function() {
         resultContainer.classList.add('show');
     };
 
-    const createAdElement = (client, slot) => {
-        const adContainer = document.createElement('div');
-        adContainer.className = 'ads-container';
-        
-        if (client && client.includes('pub-')) {
-            const adIns = document.createElement('ins');
-            adIns.className = "adsbygoogle";
-            adIns.style.display = "block";
-            adIns.setAttribute('data-ad-client', client);
-            adIns.setAttribute('data-ad-slot', slot);
-            adIns.setAttribute('data-ad-format', 'auto');
-            adIns.setAttribute('data-full-width-responsive', 'true');
-            adContainer.appendChild(adIns);
-            
-            // We need to delay the push slightly to ensure the element is in the DOM
-            setTimeout(() => {
-                try {
-                    (window.adsbygoogle = window.adsbygoogle || []).push({});
-                } catch (e) {
-                    console.error("AdSense push error", e);
-                }
-            }, 0);
-        }
-        return adContainer;
-    };
-
     async function fetchAndDisplayData() {
         try {
             const response = await fetch(apiUrl);
@@ -119,32 +84,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
             currencyRates = { ...prices, dzd: { buy: 1, sell: 1 } };
             
-            // Clear the grid before adding new content
-            cardsGrid.innerHTML = '';
-
-            currencies.forEach((currency, index) => {
-                const cardElement = document.createElement('div');
-                cardElement.innerHTML = createCard(currency, prices[currency.code] || {}, index * 0.05);
-                cardsGrid.appendChild(cardElement.firstChild);
-
-                // Insert ad slots at specific positions
-                if (index === 2) { // After 3rd card
-                    cardsGrid.appendChild(createAdElement(ad_client_1, ad_slot_1));
-                }
-                if (index === 5) { // After 6th card
-                    cardsGrid.appendChild(createAdElement(ad_client_2, ad_slot_2));
-                }
-                if (index === 8) { // After 9th card
-                    cardsGrid.appendChild(createAdElement(ad_client_3, ad_slot_3));
-                }
+            // إنشاء كود HTML لجميع البطاقات مرة واحدة
+            const allCardsHtml = currencies.map((currency, index) => {
+                return createCard(currency, prices[currency.code] || {}, index * 0.05);
             });
+
+            // توزيع البطاقات على الحاويات الثلاث الموجودة في الصفحة
+            if(cardsGrid1) cardsGrid1.innerHTML = allCardsHtml.slice(0, 3).join('');
+            if(cardsGrid2) cardsGrid2.innerHTML = allCardsHtml.slice(3, 6).join('');
+            if(cardsGrid3) cardsGrid3.innerHTML = allCardsHtml.slice(6, 11).join('');
+
 
             const optionsHtml = Object.keys(currencyRates).map(code => `<option value="${code}">${code.toUpperCase()}</option>`).join('');
             fromSelect.innerHTML = optionsHtml; toSelect.innerHTML = optionsHtml;
             fromSelect.value = 'eur'; toSelect.value = 'dzd';
             
             loader.style.display = 'none';
-            cardsGrid.style.display = 'grid';
+            if(cardsGrid1) cardsGrid1.style.display = 'grid';
+            if(cardsGrid2) cardsGrid2.style.display = 'grid';
+            if(cardsGrid3) cardsGrid3.style.display = 'grid';
 
             calculateConversion();
 
